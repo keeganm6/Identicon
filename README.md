@@ -1,4 +1,10 @@
 # Identicon
+This module creates an Identicon profile pictures based on your profile name.
+
+
+#Waarom staat dit er ?
+
+
 <<<<<<< HEAD
 
 **TODO: Add description**
