@@ -1,5 +1,5 @@
 # Identicon
-This module creates an Identicon profile pictures based on your profile name.
+This module creates an "Identicon profile picture" based on your profile name.
 
 
 #Waarom staat dit er ?
