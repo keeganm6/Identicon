@@ -24,9 +24,11 @@ Tests can be created by:
 Run `mix test` to run the tests.
 
 Or choose the Testing Deluxe option:
+
 * Open a new iTerm window;
 * Start /test/testing.sh from the prompt;
 * Watch, wonder and weep in amazement...
+
 ;-)
 
 
