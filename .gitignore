@@ -1,4 +1,5 @@
 # The directory Mix will write compiled artifacts to.
+# RH: Was /_build, but thought /_build/* would be better.
 /_build
 
 # If you run "mix test --cover", coverage assets end up here.
@@ -8,7 +9,8 @@
 /deps
 
 # Where 3rd-party dependencies like ExDoc output generated docs.
-/doc
+# RH: Do NOT ignore /doc. It can be generated, but if it's updated, why not include?
+#/doc
 
 # Ignore .fetch files in case you like to edit your project deps locally.
 /.fetch

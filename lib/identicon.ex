@@ -1,65 +1,106 @@
 defmodule Identicon do
   @moduledoc """
-  Documentation for Identicon.
+    Identicon converts a string into an identicon image.
   """
 
   @doc """
-  Hello world.
+  Main function; input = "name" and output is identicon-file. Uses the other functions.
 
   ## Examples
 
-      iex> Identicon.hello
-      :world
+      iex> Identicon.main("froodi")
+      [{177, 0}, {156, 1}, {112, 2}, {156, 3}, {177, 4}, {71, 5}, {189, 6}, {13, 7},
+      {189, 8}, {71, 9}, {77, 10}, {75, 11}, {195, 12}, {75, 13}, {77, 14}, {39, 15},
+      {171, 16}, {16, 17}, {171, 18}, {39, 19}, {61, 20}, {76, 21}, {40, 22},
+      {76, 23}, {61, 24}]
+
   """
-  def hello do
-    :world
-  end
-
-  # 1 Take input string
-
+  #1 Read string
   def main(input) do
-   input
-   |> hash_input
-   |> pick_color
-   |> build_grid
-   # |> pick_color
+    input
+    |> hash_input
+    |> pick_color
+    |> build_grid
+
   end
 
-  # 2 Convert string into MD5 hash
-  # 3 Create list of numbers based on this string
+  @doc """
+  Function hash_input/1 converts string into Identicon.Image struct.
 
+  ## Examples
+
+      iex> Identicon.hash_input("froodi")
+      %Identicon.Image{color: nil,
+      hex: [177, 156, 112, 71, 189, 13, 77, 75, 195, 39, 171, 16, 61, 76, 40, 184]}
+
+  """
+  #2 Convert string "input" with MD5 into Hash
+  #3 Convert Hash into Line of Numbers
   def hash_input(input) do
-    # Input string
     hex = :crypto.hash(:md5, input)
     |> :binary.bin_to_list
 
     %Identicon.Image{hex: hex}
   end
 
-  # 4 Picks a color 
+  @doc """
+  Function pick_color/1 converts string into Identicon.Image struct.
 
-  def pick_color(%Identicon.Image{hex: [r, g, b | _tail]} = image)do
+  ## Examples
+
+      iex> image = Identicon.hash_input("froodi")
+      %Identicon.Image{color: nil,
+      hex: [177, 156, 112, 71, 189, 13, 77, 75, 195, 39, 171, 16, 61, 76, 40, 184]}
+      iex> Identicon.pick_color(image)
+      %Identicon.Image{color: {177, 156, 112},
+      hex: [177, 156, 112, 71, 189, 13, 77, 75, 195, 39, 171, 16, 61, 76, 40, 184]}
+
+  """
+  #4 Pick Color and make Image struct
+  def pick_color(%Identicon.Image{hex: [r, g, b | _tail ]} = image) do
     %Identicon.Image{image | color: {r, g, b}}
   end
 
-  # 5 Build a grid of squares 250 px * 250 px.
+  @doc """
+  Function build_grid/1 converts list of sub-lists with 3 elements 
+  into list with tuples of 5 elements (3 mirrored). (See mirror_row/1.)
+
+  ## Examples
+
+      iex> Identicon.hash_input("froodi")
+      %Identicon.Image{color: nil,
+      hex: [177, 156, 112, 71, 189, 13, 77, 75, 195, 39, 171, 16, 61, 76, 40, 184]}
+
+  """
+  #5 Build Grid from Line of Numbers and Color
   def build_grid(%Identicon.Image{hex: hex} = image) do
     hex
-    |> Enum.chunk(3)
-    |> Enum.map(&mirrow_row/1)
+    |> Enum.chunk(3)              # converts hex-list into list with sub-list of 3
+    |> Enum.map(&mirror_row/1)    # iterates over list and mirrors each row (3 to 5)
+    |> List.flatten               # converts list of sub-lists into one list of values
+    |> Enum.with_index            # converts list of values into list of {value, index}-tuples
   end
 
-  # 6 Mirror row [145,46,200] to [145,46,200,46,145].
+  @doc """
+  Function mirror_row/1 converts list of [ 1, 2, 3 ] into mirrored list [ 1,2,3,2,1 ]
+  
+  ## Examples
 
-  def mirrow_row(row) do
-    # Take the first and the 2nd element [145,46,200]
+      iex> row = [ 1, 4, 16 ]
+      [1, 4, 16]
+      iex> Identicon.mirror_row(row)
+      [1, 4, 16, 4, 1]
+
+  """
+  #6 Mirror row 1,2,3 into 1,2,3,2,1
+  def mirror_row(row) do
     [first, second | _tail] = row
-
-    # Append the values to the row [145,46,200,46,145]
     row ++ [second, first]
-
   end
-  # 6 Converts this grid into an image
 
-  # 7 Saves the img
+  #6 Convert Grid into Image
+
+
+  #7 Save Image
+
 end
